@@ -7,10 +7,12 @@ import { useSelector, useDispatch } from "react-redux";
 export default function IconPage() {
   const dispatch = useDispatch();
   console.debug("Here");
-  useEffect(() => {
-    (async () => {
+  useEffect(async () => {
+    try {
       await getLastUsed("Token")(dispatch);
-    })();
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
   return (
     <View>

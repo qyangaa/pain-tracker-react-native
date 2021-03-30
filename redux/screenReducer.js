@@ -1,10 +1,14 @@
+import * as ActionTypes from "./ActionTypes";
+
 const screenState = {
   screens: [],
 };
 
 export default function screenReducer(state = screenState, action) {
   switch (action.type) {
-    case "TOGGLE_OPTION":
+    case ActionTypes.ADD_ALL_SCREENS:
+      return { screens: action.payload };
+    case ActionTypes.TOGGLE_OPTION:
       const type = action.payload.type;
       const optionId = action.payload.optionId;
       const newScreens = [...screenState.screens];
@@ -15,7 +19,7 @@ export default function screenReducer(state = screenState, action) {
       newScreens[typeIdx].options[optionIdx].selected = !newScreens[typeIdx]
         .options[optionIdx].selected;
       return { screens: newScreens };
-    case "DELETE_SCREEN":
+    case ActionTypes.DELETE_SCREEN:
       return {
         screens: state.screens.filter((screens) => screens !== action.payload),
       };

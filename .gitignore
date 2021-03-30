@@ -9,6 +9,6 @@ npm-debug.*
 *.orig.*
 web-build/
 .env
-
+hidden/
 # macOS
 .DS_Store
