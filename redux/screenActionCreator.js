@@ -6,6 +6,8 @@ export const getLastUsed = (token) => {
   return async (dispatch) => {
     try {
       const data = await client.request(queries.getLastUsed);
+      data.lastUsed.forEach((item) => (item.image_url = item.backgroundImage));
+      console.log("fetching last used");
       dispatch({ type: ActionTypes.ADD_ALL_SCREENS, payload: data.lastUsed });
     } catch (error) {
       throw error;

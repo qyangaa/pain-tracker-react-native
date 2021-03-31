@@ -1,19 +1,33 @@
-import { StatusBar } from "expo-status-bar";
-import React from "react";
+import "react-native-gesture-handler";
+import * as React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 import { StyleSheet, Text, View } from "react-native";
 import { ConfigureStore } from "./redux/configureStore";
 import { Provider } from "react-redux";
 
-import IconPage from "./components/pages/IconPage";
+//  Pages
+import ScreensContainer from "./components/pages/ScreensContainer";
+import OnBoarding from "./components/pages/OnBoarding";
+import Authentication from "./components/pages/Authentication";
 
 const store = ConfigureStore();
+
+const AuthenticationStack = createStackNavigator();
+const AuthenticationNavigator = () => {
+  <AuthenticationStack.Navigator>
+    <AuthenticationStack.Screen name="OnBoarding" component={OnBoarding} />
+  </AuthenticationStack.Navigator>;
+};
 
 export default function App() {
   return (
     <Provider store={store}>
-      <View style={styles.container}>
-        <IconPage />
-      </View>
+      <NavigationContainer>
+        <View style={styles.container}>
+          <ScreensContainer />
+        </View>
+      </NavigationContainer>
     </Provider>
   );
 }
