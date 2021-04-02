@@ -30,7 +30,7 @@ export const deleteScreen = (screen) => ({
   payload: screen,
 });
 
-export const toggleOption = (option) => ({
+export const toggleOption = (optionId, categoryId) => ({
   type: ActionTypes.TOGGLE_OPTION,
-  payload: option,
+  payload: { optionId, categoryId },
 });

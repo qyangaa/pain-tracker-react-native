@@ -10,18 +10,18 @@ import {
   Image,
   StyleSheet,
 } from "react-native";
-import { getLastUsed } from "../../redux/screenActionCreator";
+import { getLastUsed, toggleOption } from "../../redux/screenActionCreator";
 import { useSelector, useDispatch } from "react-redux";
 
 // import styles from "./ScreensContainer.styles";
 
 import TrackerScreen from "./TrackerScreen";
+import ReportScreen from "./ReportScreen";
 import Indicator from "../common/Indicator";
 import Backdrop from "../common/Backdrop";
 import Footer from "../common/Footer";
-import WavyBackground from "../../assets/images/WavyBackground";
 
-const bgs = ["#8ABFBA", "#9ACFDD", "#F28A80", "#F2ADA7", "#595248"];
+const bgs = ["#8ABFBA", "#9ACFDD", "#F28A80", "#F2ADA7", "#D9BACE"];
 
 const { width, height } = Dimensions.get("window");
 
@@ -42,6 +42,11 @@ export default function ScreensContainer() {
   const onViewableItemsChanged = React.useRef(({ viewableItems, changed }) => {
     setCurIdx(viewableItems[0].index);
   });
+
+  const handleToggleOption = (optionId, categoryId) => {
+    dispatch(toggleOption(optionId, categoryId));
+  };
+
   useEffect(() => {
     (async () => {
       try {
@@ -56,24 +61,36 @@ export default function ScreensContainer() {
     <View style={styles.container}>
       <StatusBar hidden />
       <Backdrop scrollX={scrollX} screenWidth={width} bgs={bgs} />
-      <Footer scrollX={scrollX} screenWidth={width} screenHeight={height} />
+
       {screens && (
         <Animated.FlatList
           data={screens}
           keyExtractor={(item, index) => item._id}
           renderItem={({ item }) => (
-            <TrackerScreen
-              data={item}
-              screenWidth={width}
-              screenHeight={height}
-            />
+            <>
+              {item.final ? (
+                <ReportScreen isFinal={curIdx == screens.length - 1} />
+              ) : (
+                <Footer
+                  scrollX={scrollX}
+                  screenWidth={width}
+                  screenHeight={height}
+                />
+              )}
+              <TrackerScreen
+                data={item}
+                screenWidth={width}
+                screenHeight={height}
+                onToggleOption={handleToggleOption}
+              />
+            </>
           )}
           horizontal
           showsHorizontalScrollIndicator={false}
           pagingEnabled
           decelerationRate={"fast"}
           snapToInterval={Dimensions.get("window").width}
-          contentContainerStyle={{ paddingBottom: 100 }}
+          contentContainerStyle={{ paddingBottom: 0 }}
           scrollEventThrottle={32}
           onScroll={Animated.event(
             [{ nativeEvent: { contentOffset: { x: scrollX } } }],

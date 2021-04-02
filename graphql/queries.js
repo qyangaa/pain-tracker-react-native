@@ -21,3 +21,12 @@ export const getLastUsed = gql`
     }
   }
 `;
+
+export const createRecords = gql`
+  mutation createRecords(
+    $records: [recordInput!]!
+    $geoCoordinates: geoCoordinates
+  ) {
+    createRecords(records: $records, geoCoordinates: $geoCoordinates)
+  }
+`;
