@@ -3,13 +3,13 @@ import { View, Text } from "react-native";
 import { createRecords } from "../../graphql/requests";
 import { useSelector, useDispatch } from "react-redux";
 
-export default function ReportScreen({ isFinal }) {
+export default function ReportScreen({ isFinal, screenWidth }) {
   const screens = useSelector((state) => state.screenState.screens);
   const [isUploading, setIsUploading] = useState("");
   const [uploadError, setUploadError] = useState("");
   useEffect(() => {
     if (isFinal) {
-      setIsUploading("Uploading...");
+      setIsUploading("Uploading");
       console.log("creatingRecords Screen");
       async function upload() {
         try {
@@ -27,7 +27,13 @@ export default function ReportScreen({ isFinal }) {
   }, [isFinal]);
 
   return (
-    <View>
+    <View
+      style={{
+        width: screenWidth,
+        alignItems: "center",
+        paddingBottom: 100,
+      }}
+    >
       <Text>
         {isUploading && isUploading} {uploadError && uploadError}
       </Text>

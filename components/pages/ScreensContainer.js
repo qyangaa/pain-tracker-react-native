@@ -66,25 +66,39 @@ export default function ScreensContainer() {
         <Animated.FlatList
           data={screens}
           keyExtractor={(item, index) => item._id}
-          renderItem={({ item }) => (
-            <>
-              {item.final ? (
-                <ReportScreen isFinal={curIdx == screens.length - 1} />
-              ) : (
+          renderItem={({ item, index }) => {
+            if (index == 3) {
+              console.log("here");
+              return (
+                <>
+                  <ReportScreen
+                    isFinal={curIdx == screens.length - 1}
+                    screenWidth={width}
+                  />
+                  <Footer
+                    scrollX={scrollX}
+                    screenWidth={width}
+                    screenHeight={height}
+                  />
+                </>
+              );
+            }
+            return (
+              <>
+                <TrackerScreen
+                  data={item}
+                  screenWidth={width}
+                  screenHeight={height}
+                  onToggleOption={handleToggleOption}
+                />
                 <Footer
                   scrollX={scrollX}
                   screenWidth={width}
                   screenHeight={height}
                 />
-              )}
-              <TrackerScreen
-                data={item}
-                screenWidth={width}
-                screenHeight={height}
-                onToggleOption={handleToggleOption}
-              />
-            </>
-          )}
+              </>
+            );
+          }}
           horizontal
           showsHorizontalScrollIndicator={false}
           pagingEnabled

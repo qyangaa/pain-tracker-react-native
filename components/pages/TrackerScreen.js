@@ -17,6 +17,7 @@ export default function TrackerScreen({
         paddingBottom: 100,
       }}
     >
+      <Text>Tracker Screen</Text>
       <View style={{ flex: 0.3, alignItems: "center" }}>
         <Text
           style={{
