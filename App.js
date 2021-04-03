@@ -10,6 +10,7 @@ import { Provider } from "react-redux";
 import ScreensContainer from "./components/pages/ScreensContainer";
 import OnBoarding from "./components/pages/OnBoarding";
 import Authentication from "./components/pages/Authentication";
+import AppLoading from "expo-app-loading";
 
 const store = ConfigureStore();
 
@@ -23,11 +24,9 @@ const AuthenticationNavigator = () => {
 export default function App() {
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <View style={styles.container}>
-          <ScreensContainer />
-        </View>
-      </NavigationContainer>
+      <View style={styles.container}>
+        <ScreensContainer />
+      </View>
     </Provider>
   );
 }

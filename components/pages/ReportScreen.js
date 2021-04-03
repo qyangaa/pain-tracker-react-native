@@ -34,8 +34,18 @@ export default function ReportScreen({ isFinal, screenWidth }) {
         paddingBottom: 100,
       }}
     >
-      <Text>
+      <Text style={{ fontSize: 20, color: "#FFFFFF", marginTop: 100 }}>
         {isUploading && isUploading} {uploadError && uploadError}
+      </Text>
+      <Text
+        style={{
+          fontSize: 40,
+          color: "#FFFFFF",
+          marginTop: 100,
+          fontFamily: "sans-serif-light",
+        }}
+      >
+        Record Screen
       </Text>
     </View>
   );

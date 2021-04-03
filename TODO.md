@@ -1,0 +1,2 @@
+- How to cache icons all together? (a little slow when first loaded)
+- Current react-native bug: cannot show custom fonts on android, need to eject

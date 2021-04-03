@@ -61,14 +61,22 @@ export default function ScreensContainer() {
     <View style={styles.container}>
       <StatusBar hidden />
       <Backdrop scrollX={scrollX} screenWidth={width} bgs={bgs} />
-
+      <Text
+        style={{
+          marginTop: 15,
+          fontSize: 20,
+          color: "#FFFFFF",
+          fontFamily: "sans-serif-thin",
+        }}
+      >
+        Hey, pain!
+      </Text>
       {screens && (
         <Animated.FlatList
           data={screens}
           keyExtractor={(item, index) => item._id}
           renderItem={({ item, index }) => {
             if (index == 3) {
-              console.log("here");
               return (
                 <>
                   <ReportScreen
@@ -85,16 +93,18 @@ export default function ScreensContainer() {
             }
             return (
               <>
+                <Footer
+                  scrollX={scrollX}
+                  screenWidth={width}
+                  screenHeight={height}
+                />
                 <TrackerScreen
                   data={item}
                   screenWidth={width}
                   screenHeight={height}
                   onToggleOption={handleToggleOption}
-                />
-                <Footer
-                  scrollX={scrollX}
-                  screenWidth={width}
-                  screenHeight={height}
+                  bgs={bgs}
+                  curIdx={curIdx}
                 />
               </>
             );

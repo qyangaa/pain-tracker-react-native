@@ -1,6 +1,7 @@
 import { request } from "graphql-request";
 import * as queries from "./queries";
 import { client } from "./graphqlConfig";
+import _ from "lodash";
 
 export const createRecords = async (rawRecords) => {
   const records = [];
@@ -19,4 +20,16 @@ export const createRecords = async (rawRecords) => {
     },
   };
   const data = await client.request(queries.createRecords, variables);
+};
+
+export const searchOption = async (text, categoryId) => {
+  if (!text) return [];
+  const variables = {
+    text,
+    categoryId,
+  };
+  console.log({ text, categoryId });
+  const data = await client.request(queries.searchOption, variables);
+  console.log({ searchResult: data.searchOption });
+  return data.searchOption;
 };

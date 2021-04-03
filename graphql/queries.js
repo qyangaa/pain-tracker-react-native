@@ -30,3 +30,18 @@ export const createRecords = gql`
     createRecords(records: $records, geoCoordinates: $geoCoordinates)
   }
 `;
+
+export const searchOption = gql`
+  query searchOption($text: String!, $categoryId: String!) {
+    searchOption(text: $text, categoryId: $categoryId) {
+      _id
+      categoryId
+      src
+      srcActive
+      title
+      selected
+      duration
+      amount
+    }
+  }
+`;
