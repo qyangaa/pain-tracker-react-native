@@ -17,15 +17,20 @@ export default function screenReducer(state = screenState, action) {
     case ActionTypes.TOGGLE_OPTION:
       optionId = action.payload.optionId;
       categoryId = action.payload.categoryId;
+      duration = action.payload.duration;
       newScreens = [...state.screens];
       categoryIdx = newScreens.findIndex((screen) => screen._id === categoryId);
       optionIdx = newScreens[categoryIdx].options.findIndex(
         (option) => option._id === optionId
       );
 
-      newScreens[categoryIdx].options[optionIdx].selected = !newScreens[
-        categoryIdx
-      ].options[optionIdx].selected;
+      const selectedOption = newScreens[categoryIdx].options[optionIdx];
+      console.log({ duration });
+      if (duration && duration != selectedOption.duration)
+        selectedOption.duration = duration;
+      else
+        selectedOption.selected = !newScreens[categoryIdx].options[optionIdx]
+          .selected;
       return { screens: newScreens };
     case ActionTypes.ADD_OPTION:
       newScreens = [...state.screens];

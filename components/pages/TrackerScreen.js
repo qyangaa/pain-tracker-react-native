@@ -3,12 +3,28 @@ import { View, Text, Image, Pressable, Modal, ScrollView } from "react-native";
 import AppLoading from "expo-app-loading";
 import styles from "./TrackerScreen.styles";
 import IconsContainer from "../common/IconsContainer";
+import { toggleOption } from "../../redux/screenActionCreator";
+import { useSelector, useDispatch } from "react-redux";
+
 import * as Font from "expo-font";
+
+import CircularSlider from "../common/CircularSlider";
 
 import Search from "../common/Search";
 
 const searchIconUrl =
   "https://firebasestorage.googleapis.com/v0/b/pain-tracker-934d3.appspot.com/o/assets%2Futility_icons%2Fsearch%2Fsearch_outline_ldpi.png?alt=media";
+
+const stopWatchIconUrl =
+  "https://firebasestorage.googleapis.com/v0/b/pain-tracker-934d3.appspot.com/o/assets%2Futility_icons%2Fstop_watch%2Fstop_watch_black_ldpi.png?alt=media";
+
+const returnIconUrl =
+  "https://firebasestorage.googleapis.com/v0/b/pain-tracker-934d3.appspot.com/o/assets%2Futility_icons%2Freturn%2Fback_black_ldpi.png?alt=media";
+
+const displayTime = (time) => {
+  if (time >= 60) return `${(time / 60).toFixed(1)} hr`;
+  return `${time} min`;
+};
 
 export default function TrackerScreen({
   data,
@@ -18,8 +34,15 @@ export default function TrackerScreen({
   curIdx,
   bgs,
 }) {
+  const dispatch = useDispatch();
   const [fontsLoaded, setFontsLoaded] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isTimeOpen, setIsTimeOpen] = useState(false);
+  const [time, setTime] = useState(30);
+
+  const handleToggleOption = (option) => {
+    dispatch(toggleOption(option._id, option.categoryId, time));
+  };
 
   const loadFonts = async () => {
     await Font.loadAsync({
@@ -35,7 +58,6 @@ export default function TrackerScreen({
     loadFonts();
     return () => {};
   }, []);
-
   if (!fontsLoaded) return <AppLoading />;
   return (
     <View
@@ -77,16 +99,35 @@ export default function TrackerScreen({
               data.options.map((option) => (
                 <Pressable
                   key={"pressable" + option._id}
-                  onPress={() => onToggleOption(option._id, option.categoryId)}
+                  onPress={() => handleToggleOption(option)}
                   style={{
                     width: data.options.length > 4 ? "30%" : "40%",
-                    justifyContent: "space-around",
+                    // justifyContent: "space-around",
                     alignItems: "center",
                     // backgroundColor: "blue",
-                    height: 100,
-                    marginVertical: `${40 / data.options.length}%`,
+                    // height: 100,
+                    marginVertical: `5%`,
                   }}
                 >
+                  {data.hasDuration && (
+                    <Text
+                      key={"duration" + option._id}
+                      style={{
+                        marginTop: 10,
+                        fontSize: 14,
+                        color: bgs[curIdx],
+                        fontFamily: "sans-serif-bold",
+                        textAlign: "center",
+                        backgroundColor: "white",
+                        borderRadius: 5,
+                        paddingVertical: 1,
+                        paddingHorizontal: 7,
+                      }}
+                    >
+                      {option.selected ? (option.duration / 60).toFixed(1) : 0}{" "}
+                      hr
+                    </Text>
+                  )}
                   <Image
                     key={"icon" + option._id}
                     style={{
@@ -97,10 +138,11 @@ export default function TrackerScreen({
                       uri: option.selected ? option.srcActive : option.src,
                     }}
                   />
+
                   <Text
                     key={"text" + option._id}
                     style={{
-                      marginTop: 15,
+                      marginTop: 5,
                       fontSize: 18,
                       color: "white",
                       fontFamily: "sans-serif-light",
@@ -124,23 +166,100 @@ export default function TrackerScreen({
           onClose={() => setIsSearchOpen(false)}
         />
       </Modal>
-      <View style={{ position: "absolute", top: screenHeight * 0.8 }}>
+      <View
+        style={{
+          position: "absolute",
+          width: screenWidth * 0.8,
+          top: screenHeight * 0.8,
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
+        {data.hasDuration && (
+          <Pressable
+            style={{
+              padding: 5,
+              justifyContent: "center",
+              alignItems: "center",
+              borderRadius: 25,
+              // borderColor: bgs[curIdx],
+              borderWidth: 3,
+            }}
+            onPress={() => setIsTimeOpen(true)}
+          >
+            <Text style={{ fontSize: 18, fontFamily: "sans-serif-bold" }}>
+              {displayTime(time)}
+            </Text>
+          </Pressable>
+        )}
         <Pressable
           style={{
-            height: 30,
-            width: 30,
+            height: 50,
+            width: 50,
           }}
           onPress={() => setIsSearchOpen(true)}
         >
           <Image
             source={{
-              height: 30,
-              width: 30,
+              height: 50,
+              width: 50,
               uri: searchIconUrl,
             }}
           />
         </Pressable>
       </View>
+      <Modal visible={isTimeOpen} animationType="fade">
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text
+            style={{
+              width: screenWidth * 0.6,
+              textAlign: "center",
+              fontWeight: "800",
+              fontSize: 40,
+              marginTop: 50,
+              color: bgs[curIdx],
+              fontFamily: "sans-serif",
+              borderColor: bgs[curIdx],
+              borderWidth: 3,
+              borderRadius: 10,
+              paddingVertical: 5,
+            }}
+          >
+            {displayTime(time)}
+          </Text>
+          <CircularSlider
+            width={screenWidth * 0.8}
+            height={screenHeight * 0.5}
+            meterColor={bgs[curIdx]}
+            textColor="#fff"
+            value={time}
+            onValueChange={(value) => {
+              setTime(value);
+            }}
+          />
+          <Pressable
+            style={{
+              height: 50,
+              width: 50,
+            }}
+            onPress={() => setIsTimeOpen(false)}
+          >
+            <Image
+              source={{
+                height: 50,
+                width: 50,
+                uri: returnIconUrl,
+              }}
+            />
+          </Pressable>
+        </View>
+      </Modal>
     </View>
   );
 }

@@ -7,7 +7,7 @@ export default function Indicator({ curIdx, count, bgs }) {
     <View
       style={{
         position: "absolute",
-        bottom: 50,
+        bottom: 30,
         flexDirection: "row",
       }}
     >

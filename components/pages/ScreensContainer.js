@@ -43,10 +43,6 @@ export default function ScreensContainer() {
     setCurIdx(viewableItems[0].index);
   });
 
-  const handleToggleOption = (optionId, categoryId) => {
-    dispatch(toggleOption(optionId, categoryId));
-  };
-
   useEffect(() => {
     (async () => {
       try {
@@ -102,7 +98,6 @@ export default function ScreensContainer() {
                   data={item}
                   screenWidth={width}
                   screenHeight={height}
-                  onToggleOption={handleToggleOption}
                   bgs={bgs}
                   curIdx={curIdx}
                 />
