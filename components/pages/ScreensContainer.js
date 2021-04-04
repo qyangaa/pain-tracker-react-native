@@ -21,7 +21,7 @@ import Indicator from "../common/Indicator";
 import Backdrop from "../common/Backdrop";
 import Footer from "../common/Footer";
 
-const bgs = ["#8ABFBA", "#9ACFDD", "#F28A80", "#F2ADA7", "#D9BACE"];
+const bgs = ["#9ACFDD", "#6b8f67", "#F28A80", "#F2ADA7", "#D9BACE"];
 
 const { width, height } = Dimensions.get("window");
 
@@ -108,9 +108,8 @@ export default function ScreensContainer() {
           showsHorizontalScrollIndicator={false}
           pagingEnabled
           decelerationRate={"fast"}
-          snapToInterval={Dimensions.get("window").width}
           contentContainerStyle={{ paddingBottom: 0 }}
-          scrollEventThrottle={32}
+          scrollEventThrottle={1000}
           onScroll={Animated.event(
             [{ nativeEvent: { contentOffset: { x: scrollX } } }],
             { useNativeDriver: false }

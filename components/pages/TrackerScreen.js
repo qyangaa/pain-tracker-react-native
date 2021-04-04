@@ -26,6 +26,8 @@ const displayTime = (time) => {
   return `${time} min`;
 };
 
+const sliderScale = 0.8;
+
 export default function TrackerScreen({
   data,
   screenWidth,
@@ -39,9 +41,25 @@ export default function TrackerScreen({
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isTimeOpen, setIsTimeOpen] = useState(false);
   const [time, setTime] = useState(30);
+  const [curOption, setCurOption] = useState();
 
-  const handleToggleOption = (option) => {
-    dispatch(toggleOption(option._id, option.categoryId, time));
+  const handleToggleOption = (option, setTime = false) => {
+    if (!option) return;
+    dispatch(toggleOption(option._id, option.categoryId, time, setTime));
+  };
+
+  const handleOpenTime = (option) => {
+    if (!data.hasDuration || !option.selected) {
+      handleToggleOption(option, false);
+      return;
+    }
+    setCurOption(option);
+    setIsTimeOpen(true);
+  };
+
+  const handleCloseTime = () => {
+    setIsTimeOpen(false);
+    handleToggleOption(curOption, true);
   };
 
   const loadFonts = async () => {
@@ -99,13 +117,11 @@ export default function TrackerScreen({
               data.options.map((option) => (
                 <Pressable
                   key={"pressable" + option._id}
-                  onPress={() => handleToggleOption(option)}
+                  onPress={() => handleToggleOption(option, false)}
+                  onLongPress={() => handleOpenTime(option)}
                   style={{
                     width: data.options.length > 4 ? "30%" : "40%",
-                    // justifyContent: "space-around",
                     alignItems: "center",
-                    // backgroundColor: "blue",
-                    // height: 100,
                     marginVertical: `5%`,
                   }}
                 >
@@ -172,26 +188,9 @@ export default function TrackerScreen({
           width: screenWidth * 0.8,
           top: screenHeight * 0.8,
           flexDirection: "row",
-          justifyContent: "space-between",
+          justifyContent: "center",
         }}
       >
-        {data.hasDuration && (
-          <Pressable
-            style={{
-              padding: 5,
-              justifyContent: "center",
-              alignItems: "center",
-              borderRadius: 25,
-              // borderColor: bgs[curIdx],
-              borderWidth: 3,
-            }}
-            onPress={() => setIsTimeOpen(true)}
-          >
-            <Text style={{ fontSize: 18, fontFamily: "sans-serif-bold" }}>
-              {displayTime(time)}
-            </Text>
-          </Pressable>
-        )}
         <Pressable
           style={{
             height: 50,
@@ -201,20 +200,21 @@ export default function TrackerScreen({
         >
           <Image
             source={{
-              height: 50,
-              width: 50,
+              height: 40,
+              width: 40,
               uri: searchIconUrl,
             }}
           />
         </Pressable>
       </View>
       <Modal visible={isTimeOpen} animationType="fade">
-        <View
+        <Pressable
           style={{
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
           }}
+          onPress={() => setIsTimeOpen(false)}
         >
           <Text
             style={{
@@ -238,13 +238,13 @@ export default function TrackerScreen({
             height={screenHeight * 0.5}
             meterColor={bgs[curIdx]}
             textColor="#fff"
-            value={time}
+            value={time / sliderScale}
             onValueChange={(value) => {
-              setTime(value);
+              setTime((value * sliderScale).toFixed(0));
             }}
-            onClose={() => setIsTimeOpen(false)}
+            onClose={() => handleCloseTime()}
           />
-        </View>
+        </Pressable>
       </Modal>
     </View>
   );

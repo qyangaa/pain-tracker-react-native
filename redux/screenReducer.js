@@ -26,12 +26,7 @@ export default function screenReducer(state = screenState, action) {
 
       const selectedOption = newScreens[categoryIdx].options[optionIdx];
       console.log({ duration });
-      if (
-        newScreens[categoryIdx].hasDuration &&
-        duration &&
-        duration != selectedOption.duration
-      )
-        selectedOption.duration = duration;
+      if (action.payload.setTime) selectedOption.duration = duration;
       else
         selectedOption.selected = !newScreens[categoryIdx].options[optionIdx]
           .selected;
