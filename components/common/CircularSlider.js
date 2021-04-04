@@ -14,6 +14,7 @@ class CircularSlider extends Component {
       onStartShouldSetPanResponder: () => true,
       onMoveShouldSetPanResponder: () => true,
       onPanResponderMove: this.handlePanResponderMove,
+      onPanResponderEnd: () => setTimeout(this.props.onClose, 500),
     });
     this.state = {
       cx: width / 2,
@@ -45,6 +46,7 @@ class CircularSlider extends Component {
         meterColor,
         textColor,
         onValueChange,
+        onPress,
       } = this.props,
       { cx, cy, r } = this.state,
       startCoord = this.polarToCartesian(0),

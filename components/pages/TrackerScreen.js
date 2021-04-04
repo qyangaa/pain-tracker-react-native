@@ -242,22 +242,8 @@ export default function TrackerScreen({
             onValueChange={(value) => {
               setTime(value);
             }}
+            onClose={() => setIsTimeOpen(false)}
           />
-          <Pressable
-            style={{
-              height: 50,
-              width: 50,
-            }}
-            onPress={() => setIsTimeOpen(false)}
-          >
-            <Image
-              source={{
-                height: 50,
-                width: 50,
-                uri: returnIconUrl,
-              }}
-            />
-          </Pressable>
         </View>
       </Modal>
     </View>
