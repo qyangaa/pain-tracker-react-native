@@ -34,3 +34,8 @@ export const toggleOption = (optionId, categoryId) => ({
   type: ActionTypes.TOGGLE_OPTION,
   payload: { optionId, categoryId },
 });
+
+export const addOption = (option) => ({
+  type: ActionTypes.ADD_OPTION,
+  payload: { option },
+});

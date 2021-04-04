@@ -7,6 +7,8 @@ import {
   TextInput,
   InteractionManager,
 } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
+import { addOption } from "../../redux/screenActionCreator";
 
 import { searchOption } from "../../graphql/requests";
 import useDebounced from "../../utils/useDebounce";
@@ -23,9 +25,11 @@ export default function Search({
   curIdx,
   onClose,
 }) {
+  const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
   const inputRef = useRef();
-  const debouncedText = useDebounced(searchText, 800);
+  const debouncedText = useDebounced(searchText, 500);
+  const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
     focusInputWithKeyboard();
@@ -38,8 +42,15 @@ export default function Search({
   };
 
   useEffect(() => {
-    searchOption(debouncedText, categoryId);
+    searchOption(debouncedText, categoryId).then((data) =>
+      setSearchResults(data)
+    );
   }, [debouncedText]);
+
+  const handleSelect = (option) => {
+    dispatch(addOption(option));
+    onClose();
+  };
 
   return (
     <View
@@ -87,6 +98,42 @@ export default function Search({
         ref={inputRef}
         selectionColor={"white"}
       />
+
+      {searchResults &&
+        searchResults.map((option) => (
+          <Pressable
+            key={"pressable" + option._id}
+            onPress={() => handleSelect(option)}
+            style={{
+              width: searchResults.length > 4 ? "30%" : "40%",
+              justifyContent: "space-around",
+              alignItems: "center",
+              marginVertical: 10,
+            }}
+          >
+            <Image
+              key={"icon" + option._id}
+              style={{
+                height: 100,
+                width: 100,
+              }}
+              source={{
+                uri: option.srcActive,
+              }}
+            />
+            <Text
+              key={"text" + option._id}
+              style={{
+                marginTop: 15,
+                fontSize: 20,
+                color: "white",
+                fontFamily: "sans-serif-light",
+              }}
+            >
+              {option.title}
+            </Text>
+          </Pressable>
+        ))}
     </View>
   );
 }

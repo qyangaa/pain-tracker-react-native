@@ -28,8 +28,6 @@ export const searchOption = async (text, categoryId) => {
     text,
     categoryId,
   };
-  console.log({ text, categoryId });
   const data = await client.request(queries.searchOption, variables);
-  console.log({ searchResult: data.searchOption });
   return data.searchOption;
 };

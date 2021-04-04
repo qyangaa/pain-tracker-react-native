@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Image, Pressable, Modal } from "react-native";
+import { View, Text, Image, Pressable, Modal, ScrollView } from "react-native";
 import AppLoading from "expo-app-loading";
 import styles from "./TrackerScreen.styles";
 import IconsContainer from "../common/IconsContainer";
@@ -8,7 +8,7 @@ import * as Font from "expo-font";
 import Search from "../common/Search";
 
 const searchIconUrl =
-  "https://firebasestorage.googleapis.com/v0/b/pain-tracker-934d3.appspot.com/o/assets%2Futility_icons%2Fsearch%2Fsearch_solid_ldpi.png?alt=media";
+  "https://firebasestorage.googleapis.com/v0/b/pain-tracker-934d3.appspot.com/o/assets%2Futility_icons%2Fsearch%2Fsearch_outline_ldpi.png?alt=media";
 
 export default function TrackerScreen({
   data,
@@ -20,6 +20,7 @@ export default function TrackerScreen({
 }) {
   const [fontsLoaded, setFontsLoaded] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+
   const loadFonts = async () => {
     await Font.loadAsync({
       indieflower_regular: {
@@ -59,51 +60,58 @@ export default function TrackerScreen({
         </Text>
         <View
           style={{
-            flex: 0.8,
-            flexDirection: "row",
-            flexWrap: "wrap",
-            justifyContent: "space-around",
-            marginTop: "10%",
+            // flex: 0.8,
+            marginTop: data.options.length > 6 ? "2%" : "10%",
             marginHorizontal: "10%",
+            height: screenHeight * 0.55,
           }}
         >
-          {data.options &&
-            data.options.map((option) => (
-              <Pressable
-                key={"pressable" + option._id}
-                onPress={() => onToggleOption(option._id, option.categoryId)}
-                style={{
-                  width: data.options.length > 4 ? "30%" : "40%",
-                  justifyContent: "space-around",
-                  alignItems: "center",
-                  // backgroundColor: "blue",
-                  height: 100,
-                  marginVertical: `${40 / data.options.length}%`,
-                }}
-              >
-                <Image
-                  key={"icon" + option._id}
+          <ScrollView
+            contentContainerStyle={{
+              flexDirection: "row",
+              flexWrap: "wrap",
+              justifyContent: "space-around",
+            }}
+          >
+            {data.options &&
+              data.options.map((option) => (
+                <Pressable
+                  key={"pressable" + option._id}
+                  onPress={() => onToggleOption(option._id, option.categoryId)}
                   style={{
+                    width: data.options.length > 4 ? "30%" : "40%",
+                    justifyContent: "space-around",
+                    alignItems: "center",
+                    // backgroundColor: "blue",
                     height: 100,
-                    width: 100,
-                  }}
-                  source={{
-                    uri: option.selected ? option.srcActive : option.src,
-                  }}
-                />
-                <Text
-                  key={"text" + option._id}
-                  style={{
-                    marginTop: 15,
-                    fontSize: 20,
-                    color: "white",
-                    fontFamily: "sans-serif-light",
+                    marginVertical: `${40 / data.options.length}%`,
                   }}
                 >
-                  {option.title}
-                </Text>
-              </Pressable>
-            ))}
+                  <Image
+                    key={"icon" + option._id}
+                    style={{
+                      height: 100,
+                      width: 100,
+                    }}
+                    source={{
+                      uri: option.selected ? option.srcActive : option.src,
+                    }}
+                  />
+                  <Text
+                    key={"text" + option._id}
+                    style={{
+                      marginTop: 15,
+                      fontSize: 18,
+                      color: "white",
+                      fontFamily: "sans-serif-light",
+                      textAlign: "center",
+                    }}
+                  >
+                    {option.title}
+                  </Text>
+                </Pressable>
+              ))}
+          </ScrollView>
         </View>
       </View>
       <Modal visible={isSearchOpen} animationType="fade">
@@ -116,22 +124,23 @@ export default function TrackerScreen({
           onClose={() => setIsSearchOpen(false)}
         />
       </Modal>
-      <Pressable
-        style={{
-          height: 30,
-          width: 30,
-          top: screenHeight * 0.5,
-        }}
-        onPress={() => setIsSearchOpen(true)}
-      >
-        <Image
-          source={{
+      <View style={{ position: "absolute", top: screenHeight * 0.8 }}>
+        <Pressable
+          style={{
             height: 30,
             width: 30,
-            uri: searchIconUrl,
           }}
-        />
-      </Pressable>
+          onPress={() => setIsSearchOpen(true)}
+        >
+          <Image
+            source={{
+              height: 30,
+              width: 30,
+              uri: searchIconUrl,
+            }}
+          />
+        </Pressable>
+      </View>
     </View>
   );
 }
