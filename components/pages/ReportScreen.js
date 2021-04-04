@@ -11,6 +11,7 @@ export default function ReportScreen({ isFinal, screenWidth }) {
     if (isFinal) {
       setIsUploading("Uploading");
       console.log("creatingRecords Screen");
+      console.log(screens);
       async function upload() {
         try {
           await createRecords(screens);
@@ -20,6 +21,7 @@ export default function ReportScreen({ isFinal, screenWidth }) {
           }, 2000);
         } catch (error) {
           setUploadError("Failed to upload records, please try again");
+          console.log({ error });
         }
       }
       upload();
