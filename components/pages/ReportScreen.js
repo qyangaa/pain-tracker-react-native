@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { View, Text } from "react-native";
-import { createRecords } from "../../graphql/requests";
+import { View, Text, Button, ScrollView } from "react-native";
+import { createRecords, getPainDayData } from "../../graphql/requests";
 import { useSelector, useDispatch } from "react-redux";
+import BarChart from "../common/BarChart";
+import TimeLineChart from "../common/TimeLineChart";
 
 export default function ReportScreen({ isFinal, screenWidth }) {
   const screens = useSelector((state) => state.screenState.screens);
   const [isUploading, setIsUploading] = useState("");
   const [uploadError, setUploadError] = useState("");
+  const [painDayData, setPainDayData] = useState();
+  const upload = false;
   useEffect(() => {
-    if (isFinal) {
+    getPainChart();
+    if (isFinal && upload) {
       setIsUploading("Uploading");
       console.log("creatingRecords Screen");
       console.log(screens);
@@ -28,6 +33,14 @@ export default function ReportScreen({ isFinal, screenWidth }) {
     }
   }, [isFinal]);
 
+  const getPainChart = async () => {
+    try {
+      const result = await getPainDayData("1");
+      setPainDayData(result);
+      // console.log({ result });
+    } catch (error) {}
+  };
+
   return (
     <View
       style={{
@@ -39,16 +52,17 @@ export default function ReportScreen({ isFinal, screenWidth }) {
       <Text style={{ fontSize: 20, color: "#FFFFFF", marginTop: 100 }}>
         {isUploading && isUploading} {uploadError && uploadError}
       </Text>
-      <Text
-        style={{
-          fontSize: 40,
-          color: "#FFFFFF",
-          marginTop: 100,
-          fontFamily: "sans-serif-light",
+      <ScrollView
+        contentContainerStyle={{
+          flexDirection: "row",
+          flexWrap: "wrap",
+          justifyContent: "space-around",
         }}
       >
-        Record Screen
-      </Text>
+        {painDayData && (
+          <TimeLineChart chartData={painDayData} screenWidth={screenWidth} />
+        )}
+      </ScrollView>
     </View>
   );
 }

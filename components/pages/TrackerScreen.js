@@ -186,7 +186,7 @@ export default function TrackerScreen({
         style={{
           position: "absolute",
           width: screenWidth * 0.8,
-          top: screenHeight * 0.8,
+          bottom: screenHeight * 0.15,
           flexDirection: "row",
           justifyContent: "center",
         }}

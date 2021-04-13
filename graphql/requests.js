@@ -31,3 +31,12 @@ export const searchOption = async (text, categoryId) => {
   const data = await client.request(queries.searchOption, variables);
   return data.searchOption;
 };
+
+export const getPainDayData = async (numMonths) => {
+  if (!numMonths) return;
+  const variables = {
+    numMonths,
+  };
+  const data = await client.request(queries.getPainDayData, variables);
+  return data.getPainDayData;
+};

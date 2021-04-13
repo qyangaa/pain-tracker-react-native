@@ -14,6 +14,7 @@ export default function screenReducer(state = screenState, action) {
     case ActionTypes.ADD_ALL_SCREENS:
       action.payload.push({ final: true, _id: "-1" });
       return { screens: action.payload };
+
     case ActionTypes.TOGGLE_OPTION:
       optionId = action.payload.optionId;
       categoryId = action.payload.categoryId;
@@ -31,6 +32,7 @@ export default function screenReducer(state = screenState, action) {
         selectedOption.selected = !newScreens[categoryIdx].options[optionIdx]
           .selected;
       return { screens: newScreens };
+
     case ActionTypes.ADD_OPTION:
       newScreens = [...state.screens];
       const newOption = action.payload.option;
@@ -49,6 +51,7 @@ export default function screenReducer(state = screenState, action) {
       return {
         screens: state.screens.filter((screens) => screens !== action.payload),
       };
+
     default:
       return state;
   }

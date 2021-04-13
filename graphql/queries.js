@@ -45,3 +45,19 @@ export const searchOption = gql`
     }
   }
 `;
+
+export const getPainDayData = gql`
+  query getPainDayData($numMonths: String!) {
+    getPainDayData(numMonths: $numMonths) {
+      title
+      seriesData {
+        xlabel
+        ylabel
+        data {
+          x
+          y
+        }
+      }
+    }
+  }
+`;
