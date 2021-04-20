@@ -40,3 +40,30 @@ export const getPainDayData = async (numMonths) => {
   const data = await client.request(queries.getPainDayData, variables);
   return data.getPainDayData;
 };
+
+export const getDailyTotal = async (variables) => {
+  // console.log({ variables });
+  if (
+    !variables.categoryId ||
+    !variables.categoryName ||
+    !variables.numMonths ||
+    !variables.type
+  )
+    return;
+  const data = await client.request(queries.getDailyTotal, variables);
+  return data.getDailyTotal;
+};
+
+export const getContribution = async (variables) => {
+  if (
+    !variables.categoryId ||
+    !variables.categoryName ||
+    !variables.optionId ||
+    !variables.optionName ||
+    !variables.numMonths ||
+    !variables.extension
+  )
+    return;
+  const data = await client.request(queries.getContribution, variables);
+  return data.getContribution;
+};

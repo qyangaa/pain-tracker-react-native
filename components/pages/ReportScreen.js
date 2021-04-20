@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Button, ScrollView } from "react-native";
-import { createRecords, getPainDayData } from "../../graphql/requests";
+import {
+  createRecords,
+  getPainDayData,
+  getDailyTotal,
+  getContribution,
+} from "../../graphql/requests";
 import { useSelector, useDispatch } from "react-redux";
 import BarChart from "../common/BarChart";
 import TimeLineChart from "../common/TimeLineChart";
@@ -10,9 +15,28 @@ export default function ReportScreen({ isFinal, screenWidth }) {
   const [isUploading, setIsUploading] = useState("");
   const [uploadError, setUploadError] = useState("");
   const [painDayData, setPainDayData] = useState();
+  const [dailyTotalArgumets, setdailyTotalArgumets] = useState({
+    categoryId: "3",
+    categoryName: "exercises",
+    numMonths: "3",
+    type: "duration",
+  });
+  const [dailyTotalData, setDailyTotalData] = useState();
+
+  const [contributionArguments, setContributionArguments] = useState({
+    categoryId: "3",
+    categoryName: "exercises",
+    optionId: "16",
+    optionName: "less pain",
+    numMonths: "5",
+    extension: "7",
+  });
+  const [contributionData, setContributionData] = useState();
   const upload = false;
   useEffect(() => {
-    getPainChart();
+    getPainData();
+    getDailyTotalData();
+    getContributionData();
     if (isFinal && upload) {
       setIsUploading("Uploading");
       console.log("creatingRecords Screen");
@@ -33,12 +57,34 @@ export default function ReportScreen({ isFinal, screenWidth }) {
     }
   }, [isFinal]);
 
-  const getPainChart = async () => {
+  const getPainData = async () => {
     try {
-      const result = await getPainDayData("1");
+      const result = await getPainDayData("3");
       setPainDayData(result);
       // console.log({ result });
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getDailyTotalData = async () => {
+    try {
+      const result = await getDailyTotal(dailyTotalArgumets);
+      setDailyTotalData(result);
+      // console.log("daily total data:", { result });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getContributionData = async () => {
+    try {
+      const result = await getContribution(contributionArguments);
+      setContributionData(result);
+      // console.log("contribution data:", { result });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -59,8 +105,11 @@ export default function ReportScreen({ isFinal, screenWidth }) {
           justifyContent: "space-around",
         }}
       >
-        {painDayData && (
-          <TimeLineChart chartData={painDayData} screenWidth={screenWidth} />
+        {painDayData && dailyTotalData && (
+          <TimeLineChart
+            chartData={[painDayData, dailyTotalData]}
+            screenWidth={screenWidth}
+          />
         )}
       </ScrollView>
     </View>

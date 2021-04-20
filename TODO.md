@@ -1,5 +1,7 @@
-- How to cache icons all together? (a little slow when first loaded)
-- Current react-native bug: cannot show custom fonts on android, need to eject
+## Next TODO:
+
+- Plot dailyTotal line chart
+- Plot contribution pie chart
 
 ## Current progress on data visualization
 
@@ -13,3 +15,8 @@ object of points: eg. { x: item.date, y: painLevel }
 - React-native chart kit: haven't tried yet
 - victory-native: good dynamic charts as document shows, but had problem with correct sizing of charts in container in react native.
 - React-native-svg: currently using, still have problem with customized x-tick spacing, as well as deciding what data format to use (object of (x,y) points or array of x's and y's)
+
+## Questions
+
+- How to cache icons all together? (a little slow when first loaded)
+- Current react-native bug: cannot show custom fonts on android, need to eject
