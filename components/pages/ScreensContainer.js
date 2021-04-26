@@ -17,11 +17,13 @@ import { useSelector, useDispatch } from "react-redux";
 
 import TrackerScreen from "./TrackerScreen";
 import ReportScreen from "./ReportScreen";
+import ReportsScreenWebview from "./ReportsScreenWebview";
 import Indicator from "../common/Indicator";
 import Backdrop from "../common/Backdrop";
 import Footer from "../common/Footer";
 
 const bgs = ["#9ACFDD", "#6b8f67", "#F28A80", "#F2ADA7", "#D9BACE"];
+const reportBg = "#00172E";
 
 const { width, height } = Dimensions.get("window");
 
@@ -47,6 +49,8 @@ export default function ScreensContainer() {
     (async () => {
       try {
         await getLastUsed("Token")(dispatch);
+        bgs[screens.length - 1] = reportBg;
+        // console.log(bgs);
       } catch (error) {
         console.log(error);
       }
@@ -75,12 +79,9 @@ export default function ScreensContainer() {
             if (index == 3) {
               return (
                 <>
-                  <ReportScreen
+                  {/* <ReportScreen */}
+                  <ReportsScreenWebview
                     isFinal={curIdx == screens.length - 1}
-                    screenWidth={width}
-                  />
-                  <Footer
-                    scrollX={scrollX}
                     screenWidth={width}
                     screenHeight={height}
                   />

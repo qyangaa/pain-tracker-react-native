@@ -10,7 +10,7 @@ import { useSelector, useDispatch } from "react-redux";
 import BarChart from "../common/BarChart";
 import TimeLineChart from "../common/TimeLineChart";
 
-export default function ReportScreen({ isFinal, screenWidth }) {
+export default function ReportScreen({ isFinal, screenWidth, screenHeight }) {
   const screens = useSelector((state) => state.screenState.screens);
   const [isUploading, setIsUploading] = useState("");
   const [uploadError, setUploadError] = useState("");
@@ -93,6 +93,7 @@ export default function ReportScreen({ isFinal, screenWidth }) {
         width: screenWidth,
         alignItems: "center",
         paddingBottom: 100,
+        // backgroundColor: "white",
       }}
     >
       <Text style={{ fontSize: 20, color: "#FFFFFF", marginTop: 100 }}>
@@ -109,6 +110,7 @@ export default function ReportScreen({ isFinal, screenWidth }) {
           <TimeLineChart
             chartData={[painDayData, dailyTotalData]}
             screenWidth={screenWidth}
+            screenHeight={screenHeight}
           />
         )}
       </ScrollView>

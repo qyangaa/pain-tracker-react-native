@@ -1,7 +1,8 @@
 ## Next TODO:
 
-- Plot dailyTotal line chart
+- Refractor line chart to separate container
 - Plot contribution pie chart
+- Webview in react native: https://medium.com/spritle-software/embed-responsive-webpage-on-a-react-native-app-8cd418714bde
 
 ## Current progress on data visualization
 
